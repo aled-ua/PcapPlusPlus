@@ -1195,17 +1195,18 @@ std::vector<uint8_t> TLSECPointFormatExtension::getECPointFormatList() const
 {
 	std::vector<uint8_t> result;
 
-	uint16_t extensionLength = getLength();
-	uint8_t listLength = *getData();
-	if (listLength != static_cast<uint8_t>(extensionLength - 1))
+    // Calculate and validate extension lengths
+    uint16_t extensionLength = getLength();
+    uint8_t listLength = *getData();
+
+    if (extensionLength < 2 || listLength >= extensionLength)
 		return result; // bad extension data
 
 	uint8_t* dataPtr = getData() + sizeof(uint8_t);
 	for (int i = 0; i < listLength; i++)
-	{
+    // Loop through the available items safely
+    for (size_t i = 0; i < listLength; i++)
 		result.push_back(*dataPtr);
-		dataPtr += sizeof(uint8_t);
-	}
 
 	return result;
 }
