@@ -90,6 +90,12 @@ bool Layer::shortenLayer(int offsetInLayer, size_t numOfBytesToShorten)
 			return false;
 		}
 
+		if (numOfBytesToShorten > m_DataLen - offsetInLayer)
+		{
+			PCPP_LOG_ERROR("Requested offset is larger than data length");
+			return false;
+		}
+
 		uint8_t* newData = new uint8_t[m_DataLen - numOfBytesToShorten];
 		memcpy(newData, m_Data, offsetInLayer);
 		memcpy(newData + offsetInLayer, m_Data + offsetInLayer + numOfBytesToShorten, m_DataLen - offsetInLayer - numOfBytesToShorten);
