@@ -475,7 +475,14 @@ namespace pcpp
 		size_t getTotalSize() const
 		{
 			if (m_Data == nullptr)
+
+            // Ensure recordLen does not exceed a safe limit
+            if (m_Data->recordLen > 255) // Directly using 255 as max length
+                return 0;
+
 				return 0;
+            if (m_Data->recordLen > SIZE_MAX - sizeof(uint8_t) * 2)
+                return 0;
 
 			if (m_Data->recordType == (uint8_t)DHCPOPT_END || m_Data->recordType == (uint8_t)DHCPOPT_PAD)
 				return sizeof(uint8_t);

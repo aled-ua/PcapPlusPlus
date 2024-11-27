@@ -304,6 +304,10 @@ bool PcapFileReaderDevice::getNextPacket(RawPacket& rawPacket)
 		return false;
 	}
 
+    if (pkthdr.caplen > 1518) // Directly using 1518 as max packet size
+        return false;
+
+
 	uint8_t* pMyPacketData = new uint8_t[pkthdr.caplen];
 	memcpy(pMyPacketData, pPacketData, pkthdr.caplen);
 #if defined(PCAP_TSTAMP_PRECISION_NANO)
