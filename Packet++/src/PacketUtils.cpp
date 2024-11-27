@@ -17,6 +17,8 @@ uint16_t computeChecksum(ScalarBuffer<uint16_t> vec[], size_t vecSize)
 		uint32_t localSum = 0;
 
 		// vec len is in bytes
+        if (vec[i].buffer == nullptr || vec[i].len < 2) continue; // Ensure buffer is valid and has enough length
+        if (vec[i].len % 2 != 0) return 0; // Invalid length for checksum calculation
 		for (size_t j = 0; j < vec[i].len / 2; j++)
 		{
 			PCPP_LOG_DEBUG("Value to add = 0x" << std::uppercase << std::hex << vec[i].buffer[j]);

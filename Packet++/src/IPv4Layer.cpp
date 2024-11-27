@@ -382,7 +382,12 @@ void IPv4Layer::computeCalculateFields()
 		}
 	}
 
+    // Validate internet header length
+    if (ipHdr->internetHeaderLength <= 0 || ipHdr->internetHeaderLength > 15) // Maximum header length for IPv4 is 15
+        return; 
+
 	ScalarBuffer<uint16_t> scalar = { (uint16_t*)ipHdr, (size_t)(ipHdr->internetHeaderLength*4) } ;
+    if (scalar.len > sizeof(ipHdr)) return; // Ensure length does not exceed allocated size
 	ipHdr->headerChecksum = htobe16(computeChecksum(&scalar, 1));
 }
 
