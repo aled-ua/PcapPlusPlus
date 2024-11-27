@@ -544,6 +544,10 @@ size_t BgpUpdateMessageLayer::getPathAttributesLength() const
 	if (headerLen >= minLen)
 	{
 		size_t withdrawnRouteLen = getWithdrawnRoutesLength();
+		if (sizeof(bgp_common_header) + sizeof(uint16_t) + withdrawnRouteLen + sizeof(uint16_t) > headerLen)
+		{
+			return 0; // Prevent out-of-bounds access
+		}
 		uint16_t res = be16toh(*(uint16_t*)(m_Data + sizeof(bgp_common_header) + sizeof(uint16_t) + withdrawnRouteLen));
 		if ((size_t)res > headerLen - minLen - withdrawnRouteLen)
 		{
