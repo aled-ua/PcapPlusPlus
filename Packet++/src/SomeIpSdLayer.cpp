@@ -493,9 +493,17 @@ const SomeIpSdLayer::EntriesVec SomeIpSdLayer::getEntries() const
 
 	EntriesVec vecEntries;
 	EntryPtr entry;
+    // Validate that m_Data has been initialized properly
+    if (m_Data == nullptr || getLenEntries() == 0) {
+        return vecEntries; // Return empty if data is not valid
+    }
 
 	while (remainingLen > 0)
 	{
+        // Validate that the offset is within bounds before creating the entry
+        if (offset + sizeof(SomeIpSdEntry::someipsdhdrentry) > getLenEntries()) {
+            break; // Exit loop if offset is out of bounds
+        }
 		entry =	new SomeIpSdEntry(this, offset);
 
 		size_t entryLen = entry->getLength();
