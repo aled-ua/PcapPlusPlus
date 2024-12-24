@@ -55,6 +55,10 @@ static struct _light_option *__parse_options(uint32_t **memory, const int32_t ma
 
       if (actual_length > 0) {
          opt->data = calloc(1, actual_length);
+          if (opt->data == NULL || actual_length > max_len) {
+              free(opt);
+              return NULL;
+          }
          memcpy(opt->data, local_memory, actual_length);
          local_memory += (sizeof(**memory) / sizeof(*local_memory)) * (actual_length / alignment);
       }
@@ -330,6 +334,10 @@ void light_read_record(light_file fd, light_pcapng *record)
 
    //Pull out the block contents from the file
    const uint32_t bytesToRead = current->block_total_length - 2 * sizeof(blockSize) - sizeof(blockType);
+    if (bytesToRead > current->block_total_length || bytesToRead > 65536) {
+        free(current);
+        return;
+    }
    uint32_t *local_data = calloc(bytesToRead, 1);
    bytesRead = light_read(fd, local_data, bytesToRead);
    if (bytesRead != bytesToRead || (bytesRead == EOF && feof(fd->file)))
