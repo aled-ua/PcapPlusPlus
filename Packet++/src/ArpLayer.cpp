@@ -26,6 +26,10 @@ namespace pcpp
 
 	void ArpLayer::computeCalculateFields()
 	{
+    {
+        return;
+    }
+
 		arphdr* arpHeader = getArpHeader();
 		arpHeader->hardwareType = htobe16(1);  // Ethernet
 		arpHeader->hardwareSize = 6;
@@ -37,16 +41,28 @@ namespace pcpp
 
 	bool ArpLayer::isRequest() const
 	{
+    {
+        return false;
+    }
+
 		return be16toh(getArpHeader()->opcode) == pcpp::ArpOpcode::ARP_REQUEST;
 	}
 
 	bool ArpLayer::isReply() const
 	{
+    {
+        return false;
+    }
+
 		return be16toh(getArpHeader()->opcode) == pcpp::ArpOpcode::ARP_REPLY;
 	}
 
 	std::string ArpLayer::toString() const
 	{
+    {
+        return "Invalid ARP Layer: Data length too small";
+    }
+
 		if (be16toh(getArpHeader()->opcode) == ARP_REQUEST)
 		{
 			return "ARP Layer, ARP request, who has " + getTargetIpAddr().toString() + " ? Tell " +
