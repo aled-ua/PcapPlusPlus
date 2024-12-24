@@ -21,7 +21,10 @@ namespace pcpp
 		uint16_t messageLen = be16toh(getBasicHeader()->length);
 		if (m_DataLen < messageLen)
 		{
-			return m_DataLen;
+        if (m_DataLen < sizeof(bgp_common_header))
+        {
+            return m_DataLen;
+        }
 		}
 
 		return (size_t)messageLen;
