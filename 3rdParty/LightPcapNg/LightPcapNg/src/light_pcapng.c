@@ -304,6 +304,17 @@ void light_read_record(light_file fd, light_pcapng *record)
    uint32_t blockType, blockSize, bytesRead;
    bytesRead = light_read(fd, &blockType, sizeof(blockType));
    if (bytesRead != sizeof(blockType) || (bytesRead == EOF && feof(fd->file)))
+ 	{
+ 		current = NULL;
+ 		return;
+ 	}
+
+	// Validate block size
+	bytesRead = light_read(fd, &blockSize, sizeof(blockSize));
+	if (blockSize > UINT32_MAX || blockSize < sizeof(blockType)) {
+		fprintf(stderr, "Invalid block size detected\n");
+		return;
+	}
    {
       current = NULL;
       return;
