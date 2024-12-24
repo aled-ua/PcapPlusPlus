@@ -328,6 +328,16 @@ namespace pcpp
 			return false;
 		}
 		pcap_pkthdr pkthdr;
+		// Define a reasonable maximum packet size for validation
+		const size_t MAX_PACKET_SIZE = 65535;
+		
+		// Validate caplen to ensure it is a reasonable size
+		if (pkthdr.caplen > MAX_PACKET_SIZE || pkthdr.caplen == 0)
+		{
+			PCPP_LOG_ERROR("Invalid caplen: " << pkthdr.caplen);
+			return false;
+		}
+
 		const uint8_t* pPacketData = pcap_next(m_PcapDescriptor.get(), &pkthdr);
 		if (pPacketData == nullptr)
 		{
