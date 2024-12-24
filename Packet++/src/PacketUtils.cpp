@@ -17,6 +17,10 @@ namespace pcpp
 			uint32_t localSum = 0;
 
 			// vec len is in bytes
+            if (vec[i].buffer == nullptr || vec[i].len % 2 != 0) {
+                PCPP_LOG_ERROR("Invalid buffer or length in computeChecksum");
+                return 0;
+            }
 			for (size_t j = 0; j < vec[i].len / 2; j++)
 			{
 				PCPP_LOG_DEBUG("Value to add = 0x" << std::uppercase << std::hex << vec[i].buffer[j]);
