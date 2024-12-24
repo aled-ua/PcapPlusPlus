@@ -559,6 +559,11 @@ namespace pcpp
 	bool Packet::extendLayer(Layer* layer, int offsetInLayer, size_t numOfBytesToExtend)
 	{
 		if (layer == nullptr)
+		if (numOfBytesToExtend < 0)
+		{
+			PCPP_LOG_ERROR("numOfBytesToExtend cannot be negative");
+			return false;
+		}
 		{
 			PCPP_LOG_ERROR("Layer is nullptr");
 			return false;

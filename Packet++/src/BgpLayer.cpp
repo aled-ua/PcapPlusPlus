@@ -739,6 +739,11 @@ namespace pcpp
 
 		if (newNlriDataLen > curNlriDataLen)
 		{
+			if (newNlriDataLen < curNlriDataLen)
+			{
+				PCPP_LOG_ERROR("newNlriDataLen cannot be less than curNlriDataLen");
+				return false;
+			}
 			bool res = extendLayer(sizeof(bgp_common_header) + 2 * sizeof(uint16_t) + curWithdrawnRoutesDataLen +
 			                           curPathAttributesDataLen,
 			                       newNlriDataLen - curNlriDataLen);
