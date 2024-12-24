@@ -114,7 +114,14 @@ namespace pcpp
 		for (; numOfPacketsToRead < 0 || numOfPacketsRead < numOfPacketsToRead; numOfPacketsRead++)
 		{
 			RawPacket* newPacket = new RawPacket();
-			bool packetRead = getNextPacket(*newPacket);
+            size_t allocatedPacketSize = sizeof(*newPacket);
+            if (allocatedPacketSize < 76) // Ensure size not under threshold
+            {
+                delete newPacket;
+                break; // Skip unsafe allocation
+            }
+            bool packetRead = getNextPacket(*newPacket);
+
 			if (packetRead)
 			{
 				packetVec.pushBack(newPacket);

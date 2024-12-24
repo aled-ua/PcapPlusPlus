@@ -162,6 +162,11 @@ namespace pcpp
 		/// @param[in] bytes The address as 16-byte array in network byte order
 		IPv6Address(const uint8_t bytes[16])
 		{
+            if (bytes == nullptr)
+            {
+                throw std::invalid_argument("bytes array is null");
+            }
+
 			memcpy(m_Bytes.data(), bytes, 16 * sizeof(uint8_t));
 		}
 
