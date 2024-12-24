@@ -113,6 +113,14 @@ namespace pcpp
 		}
 
 		m_RawData = (uint8_t*)pRawData;
+
+		// Validate that the raw data length does not exceed the buffer size
+		if (rawDataLen < 0 || (m_DeleteRawDataAtDestructor && rawDataLen > sizeof(m_RawData)))
+		{
+			PCPP_LOG_ERROR("Invalid raw data length: " << rawDataLen);
+			return false;
+		}
+
 		m_RawDataLen = rawDataLen;
 		m_TimeStamp = timestamp;
 		m_RawPacketSet = true;
