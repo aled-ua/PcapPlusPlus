@@ -329,7 +329,7 @@ void light_read_record(light_file fd, light_pcapng *record)
    assert((current->block_total_length % 4) == 0);
 
    //Pull out the block contents from the file
-   const uint32_t bytesToRead = current->block_total_length - 2 * sizeof(blockSize) - sizeof(blockType);
+    const uint32_t bytesToRead = current->block_total_length - 2 * sizeof(blockSize) - sizeof(blockType) + 2 * sizeof(uint32_t);
    uint32_t *local_data = calloc(bytesToRead, 1);
    bytesRead = light_read(fd, local_data, bytesToRead);
    if (bytesRead != bytesToRead || (bytesRead == EOF && feof(fd->file)))
@@ -355,7 +355,7 @@ void light_read_record(light_file fd, light_pcapng *record)
    //So we just cheat by decrementing the data pointer back 8 bytes;
    parse_by_block_type(current, local_data, local_data - 2);
 
-   free(local_data);
+    free(local_data - 2);
    *record = current;
 
    return;
