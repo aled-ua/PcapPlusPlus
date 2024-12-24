@@ -1204,11 +1204,27 @@ namespace pcpp
 		uint16_t extensionLength = getLength();
 		uint8_t listLength = *getData();
 		if (listLength != static_cast<uint8_t>(extensionLength - 1))
+        {
+            return result;  // bad extension data
+        }
+
+        // Ensure listLength is within valid bounds
+        if (listLength > extensionLength - 1)
+        {
+            return result;  // Prevent out-of-bounds access
+        }
+
 			return result;  // bad extension data
 
 		uint8_t* dataPtr = getData() + sizeof(uint8_t);
 		for (int i = 0; i < listLength; i++)
 		{
+			// Ensure dataPtr does not exceed allocated memory
+			if (dataPtr >= getData() + extensionLength)
+			{
+				break; // Prevent out-of-bounds access
+			}
+
 			result.push_back(*dataPtr);
 			dataPtr += sizeof(uint8_t);
 		}
