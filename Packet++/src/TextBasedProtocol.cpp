@@ -296,13 +296,14 @@ namespace pcpp
 		}
 
 		std::string fieldName = fieldToRemove->getFieldName();
-
-		// shorten layer and delete this field
+		
 	        if ((fieldToRemove->m_NameOffsetInMessage + fieldToRemove->getFieldSize()) > m_DataLen)
 	        {
-	            PCPP_LOG_ERROR("Field range exceeds message length");
-	            return false;
+			PCPP_LOG_ERROR("Field range exceeds message length");
+			return false;
 	        }
+		
+		// shorten layer and delete this field
 		if (!shortenLayer(fieldToRemove->m_NameOffsetInMessage, fieldToRemove->getFieldSize()))
 		{
 			PCPP_LOG_ERROR("Cannot shorten layer");
