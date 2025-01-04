@@ -97,11 +97,11 @@ namespace pcpp
 		{
 			if ((size_t)offsetInLayer >= m_DataLen)
 			{
-                if ((size_t)(offsetInLayer + numOfBytesToShorten) > m_DataLen)
-                {
-                    PCPP_LOG_ERROR("Requested range exceeds data length");
-                    return false;
-                }
+		                if ((size_t)(offsetInLayer + numOfBytesToShorten) > m_DataLen)
+		                {
+		                    PCPP_LOG_ERROR("Requested range exceeds data length");
+		                    return false;
+		                }
 				PCPP_LOG_ERROR("Requested offset is larger than data length");
 				return false;
 			}
