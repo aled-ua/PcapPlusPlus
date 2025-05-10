@@ -17,6 +17,11 @@ namespace pcpp
 			uint32_t localSum = 0;
 
 			// vec len is in bytes
+			if (vec[i].len > sizeof(vec[i].buffer))
+			{
+				PCPP_LOG_ERROR("Buffer overflow detected: vec[i].len exceeds buffer size");
+				return 0; // Return an invalid checksum
+			}
 			for (size_t j = 0; j < vec[i].len / 2; j++)
 			{
 				PCPP_LOG_DEBUG("Value to add = 0x" << std::uppercase << std::hex << vec[i].buffer[j]);
