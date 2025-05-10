@@ -335,7 +335,7 @@ namespace pcpp
 			return false;
 		}
 
-		uint8_t* pMyPacketData = new uint8_t[pkthdr.caplen];
+		uint8_t* pMyPacketData = new uint8_t[pkthdr.caplen + 2]; // Allocate extra buffer space for safety
 		memcpy(pMyPacketData, pPacketData, pkthdr.caplen);
 #if defined(PCAP_TSTAMP_PRECISION_NANO)
 		// because we opened with nano second precision 'tv_usec' is actually nanos
